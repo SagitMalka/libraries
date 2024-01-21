@@ -1,5 +1,14 @@
 #include "NumClass.h"
-#include <math.h>
+
+
+int power(int base, int exponent){
+    int result=1;
+    
+    for (exponent; exponent>0; exponent--){
+    result = result * base;
+    }
+    return result;
+}
 
 int isPalindrome(int n){
     int reversed = 0, remainder, originalNumber = n;
@@ -32,7 +41,7 @@ int isArmstrong(int n){
     while (n != 0)
     {
         int digit = n % 10;
-        sum += pow(digit, digitsCount);
+        sum += power(digit, digitsCount);
         n /= 10;
     }
     if(sum == originalNumber){
