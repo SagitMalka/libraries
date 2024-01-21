@@ -3,23 +3,6 @@
 #include <math.h>
 
 
-int power(int x, int n) {
-    if (n == 0) {
-        return 1;
-    }
-
-    if (x == 0) {
-        return 0;  
-    }
-
-    int result = 1;
-    while (n > 0) {
-        result *= x;
-        n--;
-    }
-    return result;
-}
-
 int countDigitsRecursive(int n) {
     if (n == 0) {
         return 0;
@@ -27,20 +10,19 @@ int countDigitsRecursive(int n) {
     return 1 + countDigitsRecursive(n / 10);
 }
 
-int reverse(int num) {
-    int digit = countDigitsRecursive(num);
-    int result = 0;
-
-    while (num != 0) {
-        result = result * 10 + num % 10;
-        num /= 10;
-    }
-
-    return result;
+int reverse(int num, int curr) {
+    if (num == 0)
+        return curr;
+    curr = curr *10 +num%10;
+    return rever(num/10, curr);
 }
 
 int isPalindrome(int num) {
-    return num == reverse(num);
+    int curr = rever(num, 0);
+    if (num == curr) {
+        return 1;
+    }
+    return 0;
 }
 
 
