@@ -1,76 +1,44 @@
-CC = gcc
-CFLAGS = -Wall -Wextra
+all: loops recursives recursived loopd mains maindloop maindrec
 
-SRC_DIR = src
-LIB_DIR = lib
-BIN_DIR = bin
+loops: libclassloops.a
+recursives: libclassrec.a
+recursived: libclassrec.so
+loopd: libclassloops.so
 
-# List of source files
-SOURCES = $(SRC_DIR)/basicClassification.c $(SRC_DIR)/advancedClassificationLoop.c $(SRC_DIR)/advancedClassificationRecursion.c
-HEADERS = $(SRC_DIR)/Numclass.h
+libclassloops.a: basicClassification.o advancedClassificationLoop.o
+	ar -rcs libclassloops.a basicClassification.o advancedClassificationLoop.o
 
-# Object files
-OBJECTS = $(SOURCES:.c=.o)
+libclassrec.a: basicClassification.o advancedClassificationRecursion.o
+	ar -rcs libclassrec.a basicClassification.o advancedClassificationRecursion.o
 
-# Static libraries
-LIB_LOOPS = $(LIB_DIR)/libclassloops.a
-LIB_REC = $(LIB_DIR)/libclassrec.a
+libclassrec.so: basicClassification.o advancedClassificationRecursion.o
+	gcc -shared -fPIC -o libclassrec.so basicClassification.o advancedClassificationRecursion.o
 
-# Dynamic libraries
-LIB_LOOPS_SO = $(LIB_DIR)/libclassloops.so
-LIB_REC_SO = $(LIB_DIR)/libclassrec.so
+libclassloops.so: basicClassification.o advancedClassificationLoop.o
+	gcc -shared -fPIC -o libclassloops.so basicClassification.o advancedClassificationLoop.o
 
-# Main programs
-MAIN_S = $(BIN_DIR)/mains
-MAIN_D_LOOP = $(BIN_DIR)/maindloop
-MAIN_D_REC = $(BIN_DIR)/maindrec
+mains: main.o libclassrec.a
+	gcc -Wall -g -o mains main.o libclassrec.a -lm
 
-.PHONY: all clean loops recursives recursive loopd mains maindloop maindrec
+maindloop: libclassloops.so main.o
+	gcc -Wall -g -o maindloop main.o ./libclassloops.so -lm
 
-all: loops recursives recursive loopd mains maindloop maindrec
+maindrec: main.o libclassrec.so
+	gcc -Wall -g -o maindrec main.o ./libclassrec.so -lm
 
-# Compilation rules for object files
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+basicClassification.o: basicClassification.c NumClass.h
+	gcc -Wall -g -c basicClassification.c
 
-# Compilation rules for static libraries
-$(LIB_LOOPS): $(OBJECTS)
-	ar rcs $@ $^
+advancedClassificationLoop.o: advancedClassificationLoop.c NumClass.h
+	gcc -Wall -g -c advancedClassificationLoop.c
 
-$(LIB_REC): $(OBJECTS)
-	ar rcs $@ $^
+advancedClassificationRecursion.o: advancedClassificationRecursion.c NumClass.h
+	gcc -Wall -g -c advancedClassificationRecursion.c
 
-# Compilation rules for dynamic libraries
-$(LIB_LOOPS_SO): $(OBJECTS)
-	$(CC) -shared -o $@ $^
+main.o: main.c NumClass.h
+	gcc -Wall -g -c main.c
 
-$(LIB_REC_SO): $(OBJECTS)
-	$(CC) -shared -o $@ $^
-
-# Compilation rules for main programs
-$(MAIN_S): $(SRC_DIR)/main.c $(HEADERS) $(LIB_REC)
-	$(CC) $(CFLAGS) $< -o $@ -L$(LIB_DIR) -lclassrec
-
-$(MAIN_D_LOOP): $(SRC_DIR)/main.c $(HEADERS) $(LIB_LOOPS_SO)
-	$(CC) $(CFLAGS) $< -o $@ -L$(LIB_DIR) -lclassloops -Wl,-rpath,$(LIB_DIR)
-
-$(MAIN_D_REC): $(SRC_DIR)/main.c $(HEADERS) $(LIB_REC_SO)
-	$(CC) $(CFLAGS) $< -o $@ -L$(LIB_DIR) -lclassrec -Wl,-rpath,$(LIB_DIR)
-
-# Make targets
-loops: $(LIB_LOOPS)
-
-recursives: $(LIB_REC)
-
-recursive: $(LIB_REC_SO)
-
-loopd: $(LIB_LOOPS_SO)
-
-mains: $(MAIN_S)
-
-maindloop: $(MAIN_D_LOOP)
-
-maindrec: $(MAIN_D_REC)
+.PHONY: all clean
 
 clean:
-	rm -f $(OBJECTS) $(LIB_LOOPS) $(LIB_REC) $(LIB_LOOPS_SO) $(LIB_REC_SO) $(MAIN_S) $(MAIN_D_LOOP) $(MAIN_D_REC)
+	rm -f *.o maindrec maindloop mains *.a *.so
