@@ -3,37 +3,47 @@
 #include <math.h>
 
 
-int power(int x, int n){
-    
-    if (n == 0)
+int power(int x, int n) {
+    if (n == 0) {
         return 1;
- 
-    if (x == 0)
-        return 0;
-    return x * power(x, n - 1);
+    }
+
+    if (x == 0) {
+        return 0;  // Consider handling this case explicitly if needed
+    }
+
+    int result = 1;
+    while (n > 0) {
+        result *= x;
+        n--;
+    }
+    return result;
 }
 
-int countDigitsRecursive(int n){
-    if(n == 0){
+int countDigitsRecursive(int n) {
+    if (n == 0) {
         return 0;
     }
-    return 1+ countDigitsRecursive(n/10);
+    return 1 + countDigitsRecursive(n / 10);
 }
 
 int reverse(int num) {
     int digit = countDigitsRecursive(num);
-    if (num == 0)
-        return 0;
+    int result = 0;
 
-    return ((num % 10 * pow(10, digit)) + reverse(num / 10));
+    while (num != 0) {
+        result = result * 10 + num % 10;
+        num /= 10;
+    }
+
+    return result;
 }
 
 int isPalindrome(int num) {
-    if (num == reverse(num)) {
-        return 1;
-    }
-    return 0;
+    return num == reverse(num);
 }
+
+
 
 int calcArmstrong(int num, int originalNum, int n) {
     if (num == 0) {
