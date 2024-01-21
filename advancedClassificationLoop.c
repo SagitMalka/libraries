@@ -37,9 +37,6 @@ int isArmstrong(int n){
     }
     if(sum == originalNumber){
         return 1;
-    }else{
-        return 0;
     }
-    
-
+    return 0;
 }
