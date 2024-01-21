@@ -1,6 +1,5 @@
 #include "NumClass.h"
 #include <stdio.h>
-#include <math.h>
 
 
 int countDigitsRecursive(int n) {
