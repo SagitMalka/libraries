@@ -14,7 +14,7 @@ int reverse(int num, int curr) {
     if (num == 0)
         return curr;
     curr = curr *10 +num%10;
-    return rever(num/10, curr);
+    return reverse(num/10, curr);
 }
 
 int isPalindrome(int num) {
