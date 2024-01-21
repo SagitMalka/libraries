@@ -1,7 +1,4 @@
 #include "NumClass.h"
-#include <stdio.h>
-#include <math.h>
-
 
 int countDigitsRecursive(int n){
     if(n == 0){
@@ -11,13 +8,15 @@ int countDigitsRecursive(int n){
 }
 
 int reversedNumber(int n){
-    int digit = countDigitsRecursive(n);
-
-    if(n == 0){
-        return 0;
-    }
-    return ((n % 10 * pow(10, digit)) + reversedNumber(n/10));
-
+    int rem;
+    static int sum =0;
+    if(n != 0){
+        rem = n % 10;
+        sum = sum * 10 + rem;
+        reversedNumber(n / 10);
+    } else
+        return sum;
+    return sum;
 }
 
 int isPalindrome(int n){
@@ -48,4 +47,3 @@ int isArmstrong(int num) {
     int n = countDigitsRecursive(num);
     return (calcArmstrong(num, num, n) == num) ? 1 : 0;
 }
-
