@@ -9,7 +9,7 @@ int power(int x, int n) {
     }
 
     if (x == 0) {
-        return 0;  // Consider handling this case explicitly if needed
+        return 0;  
     }
 
     int result = 1;
