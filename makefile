@@ -18,7 +18,7 @@ libclassloops.so: basicClassification.o advancedClassificationLoop.o
 	gcc -shared -fPIC -o libclassloops.so basicClassification.o advancedClassificationLoop.o
 
 mains: main.o libclassrec.a
-	gcc -Wall -g -o mains main.o libclassrec.a -lm
+	gcc -Wall -o mains main.o libclassrec.a -lm
 
 maindloop: libclassloops.so main.o
 	gcc -Wall -g -o maindloop main.o ./libclassloops.so -lm
