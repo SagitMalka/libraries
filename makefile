@@ -30,10 +30,10 @@ basicClassification.o: basicClassification.c NumClass.h
 	gcc -Wall -g -c basicClassification.c
 
 advancedClassificationLoop.o: advancedClassificationLoop.c NumClass.h
-	gcc -Wall -g -c advancedClassificationLoop.c
+	gcc -Wall -g -fPIC -c advancedClassificationLoop.c
 
 advancedClassificationRecursion.o: advancedClassificationRecursion.c NumClass.h
-	gcc -Wall -g -c advancedClassificationRecursion.c
+	gcc -Wall -g -fPIC -c advancedClassificationRecursion.c
 
 main.o: main.c NumClass.h
 	gcc -Wall -g -c main.c
